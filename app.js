@@ -49,6 +49,35 @@ app.post("/ingresar", function (req, res) {
   res.redirect("/");
 });
 
+app.use(function (req, res, next) {
+  if (!req.session.vistas) {
+    req.session.vistas = {};
+  }
+  if (!req.session.vistas[req.originalUrl]) {
+    req.session.vistas[req.originalUrl] = 1;
+  } else {
+    req.session.vistas[req.originalUrl]++;
+  }
+
+  console.log(req.session.vistas);
+
+  next();
+});
+
+app.get("/nosotros", function (req, res) {
+  res.render("pagina", {
+    nombre: "nosotros",
+    vistas: req.session.vistas[req.originalUrl],
+  });
+});
+
+app.get("/contacto", function (req, res) {
+  res.render("pagina", {
+    nombre: "contacto",
+    vistas: req.session.vistas[req.originalUrl],
+  });
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
