@@ -49,6 +49,11 @@ app.post("/ingresar", function (req, res) {
   res.redirect("/");
 });
 
+app.get("/salir", function (req, res) {
+  req.session.destroy();
+  res.redirect("/");
+});
+
 app.use(function (req, res, next) {
   if (!req.session.vistas) {
     req.session.vistas = {};
